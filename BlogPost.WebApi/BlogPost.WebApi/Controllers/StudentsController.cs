@@ -11,25 +11,25 @@ namespace BlogPost.WebApi.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly BlogPostContext _context;
+        private readonly BlogPostContext context;
 
         public StudentsController(BlogPostContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         // GET: api/Students
         [HttpGet]
         public IEnumerable<Student> GetStudents()
         {
-            return _context.Students;
+            return context.Students;
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStudent([FromRoute] int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await context.Students.FindAsync(id);
 
             if (student == null)
             {
@@ -48,11 +48,11 @@ namespace BlogPost.WebApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(student).State = EntityState.Modified;
+            context.Entry(student).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,8 +73,8 @@ namespace BlogPost.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> PostStudent([FromBody] Student student)
         {
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();
+            context.Students.Add(student);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetStudent", new { id = student.Id }, student);
         }
@@ -83,21 +83,21 @@ namespace BlogPost.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent([FromRoute] int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await context.Students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
             }
 
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
+            context.Students.Remove(student);
+            await context.SaveChangesAsync();
 
             return Ok(student);
         }
 
         private bool StudentExists(int id)
         {
-            return _context.Students.Any(e => e.Id == id);
+            return context.Students.Any(e => e.Id == id);
         }
     }
 }
