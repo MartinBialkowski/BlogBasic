@@ -37,6 +37,7 @@ namespace BlogPost.WebApi
         {
             if (env.IsDevelopment())
             {
+                DatabaseInitializer.Initialize(app);
                 app.UseDeveloperExceptionPage();
             }
             else
