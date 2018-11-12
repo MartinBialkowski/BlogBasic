@@ -20,14 +20,14 @@ namespace BlogPost.WebApi.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public IEnumerable<Student> GetStudents()
+        public ActionResult<IEnumerable<Student>> GetStudents()
         {
             return context.Students;
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetStudent([FromRoute] int id)
+        public async Task<ActionResult<Student>> GetStudent([FromRoute] int id)
         {
             var student = await context.Students.FindAsync(id);
 
@@ -71,7 +71,7 @@ namespace BlogPost.WebApi.Controllers
 
         // POST: api/Students
         [HttpPost]
-        public async Task<IActionResult> PostStudent([FromBody] Student student)
+        public async Task<ActionResult<Student>> PostStudent([FromBody] Student student)
         {
             context.Students.Add(student);
             await context.SaveChangesAsync();
@@ -92,7 +92,7 @@ namespace BlogPost.WebApi.Controllers
             context.Students.Remove(student);
             await context.SaveChangesAsync();
 
-            return Ok(student);
+            return NoContent();
         }
 
         private bool StudentExists(int id)
